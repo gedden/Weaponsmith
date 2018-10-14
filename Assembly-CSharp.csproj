@@ -65,7 +65,16 @@
     <Compile Include="Assets\ShaderForge\Example Assets\Scripts\EnableCameraDepthInForward.cs" />
     <Compile Include="Assets\ShaderForge\Example Assets\Scripts\SoftNormalsToVertexColor.cs" />
     <Compile Include="Assets\Source\Character\Character.cs" />
-    <Compile Include="Assets\SpawnPoint.cs" />
+    <Compile Include="Assets\Source\Character\Employee.cs" />
+    <Compile Include="Assets\Source\Data\Generated\BaseEmployeeData.cs" />
+    <Compile Include="Assets\Source\Data\GeneratedData.cs" />
+    <Compile Include="Assets\Source\Game\GameState.cs" />
+    <Compile Include="Assets\Source\Game\SpawnPoint.cs" />
+    <Compile Include="Assets\Source\Game\Workshop.cs" />
+    <Compile Include="Assets\Source\Game\Workstation.cs" />
+    <Compile Include="Assets\Source\System\Database.cs" />
+    <Compile Include="Assets\Source\System\DatabaseUtil.cs" />
+    <Compile Include="Assets\Source\System\GameUtil.cs" />
     <None Include="Assets\ShaderForge\Readme.txt" />
     <None Include="Assets\ShaderForge\Example Assets\Shaders\Vegetation.shader" />
     <None Include="Assets\ShaderForge\Example Assets\Shaders\VertexAnimation.shader" />
@@ -286,6 +295,12 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Unity 2017.2.0p4/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>C:/Development/Weaponsmith/Assets/Plugins/Mono.Data.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>C:/Development/Weaponsmith/Assets/Plugins/System.Data.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>C:/Users/Arthur Griffith/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>

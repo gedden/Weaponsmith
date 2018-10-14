@@ -1,0 +1,10 @@
+// Auto-Generated File. Do Not Edit. 
+// (c) Gedden Games
+// 
+
+using UnityEngine;
+
+public class %ClassName% : GeneratedData
+{
+%Params%	
+}
