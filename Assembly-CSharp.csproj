@@ -68,13 +68,16 @@
     <Compile Include="Assets\Weaponsmith\Source\Character\Employee.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\BaseEmployeeData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\GeneratedData.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Game\GameInstance.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\GameState.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\SpawnPoint.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Workshop.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Workstation.cs" />
     <Compile Include="Assets\Weaponsmith\Source\System\Database.cs" />
     <Compile Include="Assets\Weaponsmith\Source\System\DatabaseUtil.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\System\Dialog\Dialog.cs" />
     <Compile Include="Assets\Weaponsmith\Source\System\GameUtil.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\System\ModalManager.cs" />
     <None Include="Assets\ShaderForge\Readme.txt" />
     <None Include="Assets\ShaderForge\Example Assets\Shaders\Vegetation.shader" />
     <None Include="Assets\ShaderForge\Example Assets\Shaders\VertexAnimation.shader" />
