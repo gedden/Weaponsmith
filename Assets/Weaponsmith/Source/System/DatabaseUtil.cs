@@ -44,33 +44,144 @@ public class DatabaseUtil
         return default(T);
     }
 
-    public static void Insert<T>(T Data) where T : GeneratedData
+
+    /// <summary>
+    /// Insert the data into the database. Automatically updates the ID field with the new value
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Data"></param>
+    public static bool Update<T>(T Data) where T : GeneratedData
     {
+        // UPDATE Workstation SET Arcana = 3 WHERE Id = 3
+
         var ClassName = typeof(T).Name;
         var TableName = ClassName.Replace("Data", "");
 
-        string Query = "INSERT INTO (" + TableName;
+        string Query = "UPDATE " + TableName;
+        string SetCommand = "";
+
+        foreach (var Field in typeof(T).GetFields())
+        {
+            if (SetCommand.Length > 0)
+            {
+                SetCommand += ", ";
+            }
+
+            SetCommand += Field.Name + " = '";
+
+            if (Field.FieldType.IsEnum)
+            {
+                var value = (int)Field.GetValue(Data);
+                SetCommand += value;
+            }
+            else
+            {
+                SetCommand += Field.GetValue(Data);
+            }
+            SetCommand += "'";
+        }
+
+        // Finially, create the query
+        Query += " SET " + SetCommand + " WHERE Id = " + Data.Id;
+
+        // Now actually insert it!
+        SqliteConnection cnn = (SqliteConnection)Open();
+        SqliteCommand SqlCommand = new SqliteCommand(cnn) { CommandText = Query };
+        int results = SqlCommand.ExecuteNonQuery();
+        Close(cnn);
+        
+        return (results > 0);
+    }
+
+    /// <summary>
+    /// Insert the data into the database. Automatically updates the ID field with the new value
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Data"></param>
+    public static void Insert<T>(T Data) where T : GeneratedData
+    {
+        // INSERT INTO Workstation (Arcana, Xp, Position, Active ) VALUES ( 1, 1000, 12, 1);
+
+        var ClassName = typeof(T).Name;
+        var TableName = ClassName.Replace("Data", "");
+
+        string Query = "INSERT INTO " + TableName;
         string SetCommand = "";
         string ValueCommand = "";
 
-        foreach (var Member in typeof(T).GetMembers())
+        foreach (var Field in typeof(T).GetFields())
         {
-            // Only consider fields
-            if (Member.MemberType != MemberTypes.Field)
-                continue;
-
             if (SetCommand.Length > 0)
             {
                 SetCommand += ", ";
                 ValueCommand += ", ";
             }
 
-            SetCommand += Member.Name;
-            ValueCommand += Member.Name;
+            SetCommand += Field.Name;
+
+            if (Field.FieldType.IsEnum)
+            {
+                var value = (int)Field.GetValue(Data);
+                ValueCommand += value;
+            }
+            else
+            {
+                ValueCommand += Field.GetValue(Data);
+            }
         }
 
-        Query += "(" + SetCommand + " ) VALUES ( " + ValueCommand + ");";
-        Debug.Log(Query);
+        // Finially, create the query
+        Query += " (" + SetCommand + " ) VALUES ( " + ValueCommand + ");";
+
+
+        // Now actually insert it!
+        SqliteConnection cnn = (SqliteConnection)Open();
+        SqliteCommand SqlCommand = new SqliteCommand(cnn) { CommandText = Query };
+        int results = SqlCommand.ExecuteNonQuery();
+
+        // Get the last row
+        SqlCommand = new SqliteCommand(cnn) { CommandText = "SELECT last_insert_rowid()" };
+        var lastId = SqlCommand.ExecuteScalar();
+
+        if (lastId != null)
+        {
+            Data.Id = (long)lastId;
+        }
+
+        Close(cnn);
+    }
+
+    /// <summary>
+    /// Delete from the database
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Data"></param>
+    /// <returns></returns>
+    public static bool Delete<T>(T Data) where T : GeneratedData
+    {
+        return Delete<T>(Data.Id);
+    }
+
+    /// <summary>
+    /// delete from the database by id
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Id"></param>
+    /// <returns></returns>
+    public static bool Delete<T>(long Id) where T : GeneratedData
+    {
+        var ClassName = typeof(T).Name;
+        var TableName = ClassName.Replace("Data", "");
+
+        string Query = "DELETE FROM " + TableName + " WHERE Id = " + Id;
+
+        // Now actually insert it!
+        SqliteConnection cnn = (SqliteConnection)Open();
+        SqliteCommand SqlCommand = new SqliteCommand(cnn) { CommandText = Query };
+        int results = SqlCommand.ExecuteNonQuery();
+        Close(cnn);
+
+        return results > 0;
     }
 
     /// <summary>
@@ -146,7 +257,9 @@ public class DatabaseUtil
                         {
                             if(Field.FieldType.IsEnum)
                             {
-                                Field.SetValue(Result, Enum.ToObject(Field.FieldType, (int)value));
+                                var valueSet = Enum.ToObject(Field.FieldType, value);
+
+                                Field.SetValue(Result, valueSet);
                             }
                             else
                             {

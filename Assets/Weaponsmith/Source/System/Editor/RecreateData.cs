@@ -38,11 +38,17 @@ public class RecreateData : EditorWindow
     [MenuItem("Gedden/Debug")]
     public static void ShowEnums()
     {
-        foreach( var station in DatabaseUtil.QueryAll<WorkstationData>() )
-        {
-            Debug.Log(station.Arcana);
-        }
-        // WorkstationData New = new WorkstationData(1, EArcana.Divination, 100, 0, 1);
+        WorkstationData station = new WorkstationData(-1, EArcana.Enchantment, 1000, 12, 1);
+
+        DatabaseUtil.Insert(station);
+
+        station.Active = 0;
+        DatabaseUtil.Update(station);
+
+        DatabaseUtil.Delete<WorkstationData>(station.Id);
+
+        // var result = DatabaseUtil.Delete(station);
+        // Debug.Log("Deleted " + station.Id + " ? " + result );
 
     }
 
