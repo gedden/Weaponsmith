@@ -7,19 +7,19 @@ using UnityEngine.UI;
 
 public enum EDialogInteractionType
 {
+    NONE,
     OK,
     OK_CANCEL,
     CANCEL,
 }
 
-public class Dialog : MonoBehaviour
+public class Dialog : Popup
 {
     // Public Member Variables
     public Button OkButton;
     public Button CancelButton;
     public Text TitleText;
     public Text BodyText;
-    public Image ModalBackground;
 
     // Callback Delegates
     public delegate void DialogDelegate();
@@ -49,13 +49,39 @@ public class Dialog : MonoBehaviour
                     return;
             }
 
+            if( OkButton != null )
+            {
+                // Get the text
+                var OkText = OkButton.GetComponentInChildren<Text>();
+                if( OkText != null )
+                {
+                    OkText.text = GameUtil.GetRandomAffirmitive();
+                }
+            }
         }
         get { return _DialogType; }
     }
 
-    public string Title { set { TitleText.text = value; } }
-    public string Body { set { BodyText.text = value; } }
-    public bool Modal { set { ModalBackground.gameObject.SetActive(value); } }
+    public string Title
+    {
+        set
+        {
+            if (TitleText != null)
+            {
+                TitleText.text = value;
+            }
+        }
+    }
+    public string Body
+    {
+        set
+        {
+            if (BodyText != null)
+            {
+                BodyText.text = value;
+            }
+        }
+    }
 
     public void OnOk()
     {
@@ -63,14 +89,12 @@ public class Dialog : MonoBehaviour
             OkCallback();
 
         // Nuke this dialog
-        Destroy(gameObject);
+        Cleanup();
     }
     public void OnCancel()
     {
         if (CancelCallback != null)
             CancelCallback();
-
-        // Nuke this dialog
-        Destroy(gameObject);
+        Cleanup();
     }
 }

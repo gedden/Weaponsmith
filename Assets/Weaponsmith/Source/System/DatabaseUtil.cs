@@ -19,6 +19,61 @@ public class DatabaseUtil
     }
 
     /// <summary>
+    /// Accessor to get all the rows in a table
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static List<T> QueryAll<T>(string Additional = null) where T : GeneratedData
+    {
+        return InternalQuery<T>(null, Additional);
+    }
+
+    /// <summary>
+    /// Get the specific row. Otherwise, nothing!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="Id"></param>
+    /// <returns></returns>
+    public static T Query<T>(long Id, string Additional = null) where T : GeneratedData
+    {
+        var results = InternalQuery<T>(Id, Additional);
+
+        if (results.Count > 0)
+            return results[0];
+
+        return default(T);
+    }
+
+    public static void Insert<T>(T Data) where T : GeneratedData
+    {
+        var ClassName = typeof(T).Name;
+        var TableName = ClassName.Replace("Data", "");
+
+        string Query = "INSERT INTO (" + TableName;
+        string SetCommand = "";
+        string ValueCommand = "";
+
+        foreach (var Member in typeof(T).GetMembers())
+        {
+            // Only consider fields
+            if (Member.MemberType != MemberTypes.Field)
+                continue;
+
+            if (SetCommand.Length > 0)
+            {
+                SetCommand += ", ";
+                ValueCommand += ", ";
+            }
+
+            SetCommand += Member.Name;
+            ValueCommand += Member.Name;
+        }
+
+        Query += "(" + SetCommand + " ) VALUES ( " + ValueCommand + ");";
+        Debug.Log(Query);
+    }
+
+    /// <summary>
     /// Open connection to the database.
     /// </summary>
     /// <returns></returns>
@@ -40,17 +95,34 @@ public class DatabaseUtil
         Connection = null;
     }
 
-    public static List<T> Fetch<T>() where T : GeneratedData
+    /// <summary>
+    /// Internal global query code!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    private static List<T> InternalQuery<T>(long? id=null, string Additional=null) where T : GeneratedData
     {
         List<T> Results = new List<T>();
 
         try
-        { 
+        {
             var ClassName = typeof(T).Name;
             var TableName = ClassName.Replace("Data", "");
 
+            string Query = "SELECT * FROM " + TableName;
+            if( id != null )
+            {
+                Query += " WHERE Id = " + id;
+            }
+
+            if( Additional != null )
+            {
+                Query += " AND " + Additional;
+            }
+
             SqliteConnection cnn = (SqliteConnection)Open();
-            SqliteCommand mycommand = new SqliteCommand(cnn) { CommandText = "SELECT * FROM " + TableName };
+            SqliteCommand mycommand = new SqliteCommand(cnn) { CommandText = Query };
             SqliteDataReader reader = mycommand.ExecuteReader();
 
             while (reader.Read())
@@ -58,8 +130,7 @@ public class DatabaseUtil
                 // Create a new result
                 T Result = (T)Activator.CreateInstance(typeof(T));
 
-                int i = 0;
-                foreach ( var Member in typeof(T).GetMembers() )
+                foreach (var Member in typeof(T).GetMembers())
                 {
                     // Only consider fields
                     if (Member.MemberType != MemberTypes.Field)
@@ -71,11 +142,22 @@ public class DatabaseUtil
                     var value = reader[Member.Name];
                     if (value != null)
                     {
-                        Debug.Log("+ (" + Member.MemberType + ")" + Member.Name + " == (" + value + ")");
-                        Field.SetValue(Result, value);
+                        try
+                        {
+                            if(Field.FieldType.IsEnum)
+                            {
+                                Field.SetValue(Result, Enum.ToObject(Field.FieldType, (int)value));
+                            }
+                            else
+                            {
+                                Field.SetValue(Result, value);
+                            }
+                        }
+                        catch( Exception e )
+                        {
+                            Debug.LogError(e);
+                        }
                     }
-
-                    
                 }
                 Results.Add(Result);
             }

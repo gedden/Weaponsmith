@@ -4,4 +4,5 @@ using UnityEngine;
 
 public abstract class GeneratedData
 {
+    public long Id { get; set; }
 }

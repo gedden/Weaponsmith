@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +12,8 @@ using UnityEngine;
 /// </summary>
 public class RecreateData : EditorWindow
 {
-    public static string ReferenceFilePath  = "Assets/Source/System/Editor/Reference.txt";
-    public static string GeneratedFilePath     = "Assets/Source/Data/Generated";
+    public static string ReferenceFilePath  = "Assets/Weaponsmith/Source/System/Editor/Reference.txt";
+    public static string GeneratedFilePath  = "Assets/Weaponsmith/Source/Data/Generated";
 
     // Member Variables
     List<string> CreatedFiles;
@@ -31,6 +33,35 @@ public class RecreateData : EditorWindow
         RecreateData Instance = ScriptableObject.CreateInstance<RecreateData>();
         Instance.GenerateSource();
         Instance.ShowSummaryWindow();
+    }
+
+    [MenuItem("Gedden/Debug")]
+    public static void ShowEnums()
+    {
+        foreach( var station in DatabaseUtil.QueryAll<WorkstationData>() )
+        {
+            Debug.Log(station.Arcana);
+        }
+        // WorkstationData New = new WorkstationData(1, EArcana.Divination, 100, 0, 1);
+
+    }
+
+    /// <summary>
+    /// Reflectively get the enum type by name
+    /// </summary>
+    /// <param name="enumName"></param>
+    /// <returns></returns>
+    private static Type GetEnumType(string enumName)
+    {
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            var type = assembly.GetType(enumName);
+            if (type == null)
+                continue;
+            if (type.IsEnum)
+                return type;
+        }
+        return null;
     }
 
     /// <summary>
@@ -76,7 +107,6 @@ public class RecreateData : EditorWindow
         var Content = CreateFileText(ClassName, Source.Columns);
 
         // Write the File
-        Debug.Log(Content);
         WriteSource(ClassName, Content);
     }
 
@@ -99,28 +129,37 @@ public class RecreateData : EditorWindow
     private static string CreateFileText(string ClassName, DataColumnCollection Collection)
     {
         // Create the param text
-        string ParamText = "";
+        string Params = "";
+        string ConstructorParams = "";
+        string ConstructorAssignments = "";
         bool IsPrimitive;
         foreach (DataColumn Col in Collection)
         {
             // Get the type name
-            string TypeName = ToTypeName(Col.DataType, out IsPrimitive);
+            string TypeName = ToTypeName(Col, out IsPrimitive);
 
-            if (IsPrimitive)
+            // The ID will be inhereted
+            if( !Col.ColumnName.Equals("Id") )
             {
-                ParamText += "\tpublic " + TypeName + " " + Col.ColumnName + ";\n";
+                Params += "\tpublic " + TypeName + " " + Col.ColumnName + ";\r\n";
             }
-            else
-            {
-                ParamText += "\tpublic " + TypeName + " " + Col.ColumnName + ";\n";
-            }
+
+            if (ConstructorParams.Length > 0)
+                ConstructorParams += ", ";
+            ConstructorParams += TypeName + " " + Col.ColumnName + "In";
+            ConstructorAssignments += "\t\t" + Col.ColumnName + " = " +Col.ColumnName+ "In;\r\n";
+            
         }
         
         // Update class name references
         string Content = ReferenceText.Replace("%ClassName%", ClassName);
 
         // Update content referneces
-        Content = Content.Replace("%Params%", ParamText);
+        Content = Content.Replace("%Params%", Params);
+        Content = Content.Replace("%ConstructorParams%", ConstructorParams);
+        Content = Content.Replace("%ConstructorAssignments%", ConstructorAssignments);
+        // Content = Content.Replace("%ConstructorParams%", "");
+        // Content = Content.Replace("%ConstructorAssignments%", "");
 
         // get the content in question
         return Content;
@@ -131,8 +170,20 @@ public class RecreateData : EditorWindow
     /// </summary>
     /// <param name="SystemType"></param>
     /// <returns></returns>
-    private static string ToTypeName(System.Type SystemType, out bool IsPrimitive)
+    private static string ToTypeName(DataColumn Column, out bool IsPrimitive)
     {
+        // Get the column name
+        var ColumnName = Column.ColumnName;
+        Type EnumType = GetEnumType("E" + ColumnName);
+        if( EnumType != null )
+        {
+            IsPrimitive = false;
+            return "E" + ColumnName;
+        }
+
+        // Get the data type
+        System.Type SystemType = Column.DataType;
+
         IsPrimitive = true;
         if (SystemType == typeof(long))
             return "long";
@@ -192,7 +243,7 @@ public class RecreateData : EditorWindow
         string Content = "";
         foreach (var Name in CreatedFiles)
         {
-            Content += "\n- " + Name;
+            Content += "\n+ " + Name;
         }
 
         EditorUtility.DisplayDialog(CreatedFiles.Count + "x Files Created", Content, GameUtil.GetRandomAffirmitive());

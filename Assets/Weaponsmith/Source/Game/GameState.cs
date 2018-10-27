@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameState : MonoBehaviour
 {
-    
-
 	// Use this for initialization
 	void Start ()
     {

@@ -10,13 +10,13 @@ class EditorUtil
     [MenuItem("GameObject/UI/Weaponsmith/Button")]
     private static void AddWeaponsmithButton()
     {
-        AddUI("Assets/Weaponsmith/Prefabs/UI/Button.prefab");
+        AddUI("Assets/Weaponsmith/Prefabs/UI/Widgets/Button.prefab");
     }
 
     [MenuItem("GameObject/UI/Weaponsmith/Dropdown")]
     private static void AddWeaponsmithDropdown()
     {
-        AddUI("Assets/Weaponsmith/Prefabs/UI/Dropdown.prefab");
+        AddUI("Assets/Weaponsmith/Prefabs/UI/Widgets/Dropdown.prefab");
     }
 
     private static void AddUI(string AssetPath)

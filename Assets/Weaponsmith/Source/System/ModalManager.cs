@@ -29,15 +29,22 @@ public class ModalManager : MonoBehaviour
         SystemCanvas.sortingOrder = 999;
     }
 
+
     /// <summary>
-    /// Show a popup dialog
+    /// Create a standard dialog box (title/message)
     /// </summary>
     /// <param name="DialogType"></param>
+    /// <param name="Title"></param>
+    /// <param name="Content"></param>
     /// <param name="OkCallback"></param>
     /// <param name="CancelCallback"></param>
-    public Dialog ShowPopup(EDialogInteractionType DialogType, Dialog.DialogDelegate OkCallback = null, Dialog.DialogDelegate CancelCallback = null, bool IsSystemDialog = false)
+    /// <param name="IsSystemDialog"></param>
+    /// <returns></returns>
+    public Dialog ShowDialog(EDialogInteractionType DialogType = EDialogInteractionType.NONE, string Title = null, string Content = null, Dialog.DialogDelegate OkCallback = null, Dialog.DialogDelegate CancelCallback = null, bool IsSystemDialog = false)
     {
-        var Instance = Instantiate<Dialog>(DialogPrefab);
+        // Create the popup dialog
+        var Instance = (Dialog)CreatePopup(DialogPrefab);
+
 
         if (Instance)
         {
@@ -45,8 +52,29 @@ public class ModalManager : MonoBehaviour
             Instance.OkCallback = OkCallback;
             Instance.CancelCallback = CancelCallback;
 
+            // Set the content
+            Instance.Title = Title;
+            Instance.Body = Content;
+        }
+
+        return Instance;
+    }
+
+    /// <summary>
+    /// Create a popup of any popup type
+    /// </summary>
+    /// <param name="PopupPrefab"></param>
+    /// <param name="IsModal"></param>
+    /// <param name="IsSystemDialog"></param>
+    /// <returns></returns>
+    public Popup CreatePopup(Popup PopupPrefab, bool IsModal = false, bool IsSystemDialog = false)
+    {
+        var Instance = Instantiate<Popup>(PopupPrefab);
+
+        if (Instance)
+        {
             // Set the parent to be the main canvas
-            if(IsSystemDialog)
+            if (IsSystemDialog)
             {
                 Instance.transform.SetParent(SystemCanvas.gameObject.transform, false);
             }
@@ -54,6 +82,11 @@ public class ModalManager : MonoBehaviour
             {
                 Instance.transform.SetParent(GameCanvas.gameObject.transform, false);
             }
+
+            // Setup the modal settings
+            Instance.Modal = IsModal;
+
+            // Set the positioning
             RectTransform RectTransform = SystemCanvas.GetComponent<RectTransform>();
             Vector3 Centroid = new Vector3(RectTransform.rect.width / 2, RectTransform.rect.height / 2);
             Instance.transform.SetPositionAndRotation(Centroid, Quaternion.identity);
@@ -61,4 +94,5 @@ public class ModalManager : MonoBehaviour
 
         return Instance;
     }
+
 }

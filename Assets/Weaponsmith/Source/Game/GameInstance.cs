@@ -14,7 +14,13 @@ class GameInstance : MonoBehaviour
     public static GameInstance Instance { private set; get; }
 
     // Member Properties
-    ModalManager ModalManager;
+    public MainMenu MainMenuPrefab;
+    public Session Session = null;
+
+    private ModalManager ModalManager;
+    private bool Started = false;
+    private InputController Input;
+    private Workshop Shop;
 
     public void Start()
     {
@@ -23,24 +29,54 @@ class GameInstance : MonoBehaviour
 
         // Test a dialog
         ModalManager = GetComponent<ModalManager>();
+        Input = new InputController();
+
+
     }
 
+    /// <summary>
+    /// Called after start, when the game is first started. 
+    /// </summary>
+    public void OnFirstStart()
+    {
+        ShowMainMenu();
+    }
 
-    bool done = false;
+    /// <summary>
+    /// Show the main menu for the game
+    /// </summary>
+    public void ShowMainMenu()
+    {
+        ModalManager.CreatePopup(MainMenuPrefab, true);
+    }
+
     public void Update()
     {
-        Debug.Log("Tick!" + done);
-        if (!done)
+        if( !Started )
         {
-            done = true;
-            var SystemPopup = ModalManager.ShowPopup(EDialogInteractionType.OK_CANCEL, null, null, true);
-
-            SystemPopup.Title = "System Test";
-            SystemPopup.Body = "Body Test";
-            SystemPopup.Modal = true;
-            
-
-            ModalManager.ShowPopup(EDialogInteractionType.OK);
+            OnFirstStart();
+            Started = true;
+            return;
         }
+
+        Input.CheckGlobalInput();
+    }
+
+    public void StartNewGame()
+    {
+        // Load Account Information
+
+        // Create new game information
+        Session = new Session();
+        Session.CreateFakeGame();
+
+        // Load the world
+
+        // Start a new day
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
