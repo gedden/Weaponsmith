@@ -16,6 +16,7 @@ class GameInstance : MonoBehaviour
     // Member Properties
     public MainMenu MainMenuPrefab;
     public Session Session = null;
+    public Dock Dock;
 
     public Workshop Workshop;
 
@@ -77,9 +78,25 @@ class GameInstance : MonoBehaviour
 
         // Load the world
         Workshop.Load(Session.Data);
-        
 
         // Start a new day
+        Session.NextPhase();
+
+        // Show the dock
+        RefreshDock();
+    }
+
+    public void RefreshDock()
+    {
+        if( Session == null || Session.Phase == EGamePhase.None )
+        {
+            Dock.ShowDisplays(false);
+            return;
+        }
+
+        // Update the dock
+        Dock.ShowDisplays(true);
+        Dock.SessionData = Session.Data;
     }
 
     public void Quit()

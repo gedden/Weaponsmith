@@ -47,10 +47,10 @@ public class FakeFactory
     public static SessionData CreateSession()
     {
         SessionData session = new SessionData();
-        session.Gold = UnityEngine.Random.Range(0, 1000);
-        session.Magic = UnityEngine.Random.Range(0, 1000);
-        session.Organic = UnityEngine.Random.Range(0, 1000);
-        session.Scrap = UnityEngine.Random.Range(0, 1000);
+        session.Gold = UnityEngine.Random.Range(0, 10000);
+        session.Magic = UnityEngine.Random.Range(0, 10000);
+        session.Organic = UnityEngine.Random.Range(0, 10000);
+        session.Scrap = UnityEngine.Random.Range(0, 10000);
 
         // Create some fake workstations
         long Pos = 0;

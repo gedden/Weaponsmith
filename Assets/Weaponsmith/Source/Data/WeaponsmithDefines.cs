@@ -38,6 +38,14 @@ public enum EClass
     Diviner,
 }
 
+public enum EGamePhase
+{
+    None,
+    StartOfDay,
+    Working,
+    EndOfDay,
+}
+
 public static class WeaponsmithDefines
 {
     private static Dictionary<ECurrenyType, Sprite> IconCache = new Dictionary<ECurrenyType, Sprite>();

@@ -60,12 +60,23 @@ public class Dock : MonoBehaviour
         }
     }
 
+    public SessionData SessionData
+    {
+        set
+        {
+            GoldDisplay.Value = value.Gold;
+            ScrapDisplay.Value = value.Scrap;
+            OrganicDisplay.Value = value.Organic;
+            MagicDisplay.Value = value.Magic;
+        }
+    }
+
 
     /// <summary>
     /// Set the display state for all the currencies
     /// </summary>
     /// <param name="Show"></param>
-    void ShowDisplays(bool Show=true)
+    public void ShowDisplays(bool Show=true)
     {
         GoldDisplay.gameObject.SetActive(Show);
         ScrapDisplay.gameObject.SetActive(Show);

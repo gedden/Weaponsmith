@@ -4,48 +4,55 @@ using UnityEngine;
 
 public class Session
 {
-    int Gold;
-    int Magic;
-    int Organic;
-    int Scrap;
-
     Workshop Workshop;
 
     // Property assignments
-    private SessionData _Data;
-    public SessionData Data
-    {
-        get
-        {
-            return _Data;
-        }
-        set
-        {
-            _Data = value;
-            Initialize();
-        }
-    }
+    public SessionData Data { get; set; }
 
     /// <summary>
     /// Transient data accessor
     /// </summary>
-    public bool Transient
+    public bool Transient { get { return Data.Transient; } }
+
+    public EGamePhase Phase { get; private set; }
+
+    /// <summary>
+    /// Go to the next phase
+    /// </summary>
+    public void NextPhase()
     {
-        get
+        switch (Phase)
         {
-            return _Data.Transient;
+            default:
+            case EGamePhase.StartOfDay:
+                Phase = EGamePhase.Working;
+                OnWorkDay();
+                break;
+            case EGamePhase.Working:
+                Phase = EGamePhase.EndOfDay;
+                OnEndOfDay();
+                break;
+            case EGamePhase.EndOfDay:
+                Phase = EGamePhase.StartOfDay;
+                OnStartOfDay();
+                break;
         }
     }
+
+    public void OnStartOfDay()
+    {
+
+    }
+    public void OnWorkDay() { }
+    public void OnEndOfDay() { }
+
 
     /// <summary>
     /// Initialize this session from the data
     /// </summary>
     public void Initialize()
     {
-        Gold = Data.Gold;
-        Magic = Data.Magic;
-        Organic = Data.Organic;
-        Scrap = Data.Scrap;
+        Phase = EGamePhase.None;
     }
 
 
@@ -54,15 +61,12 @@ public class Session
     /// </summary>
     public void Clear()
     {
-        Gold = 0;
-        Magic = 0;
-        Organic = 0;
-        Scrap = 0;
     }
 
     public void CreateFakeGame()
     {
         // Create new data
         Data = FakeFactory.CreateSession();
+        Initialize();
     }
 }
