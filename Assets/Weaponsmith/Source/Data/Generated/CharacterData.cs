@@ -4,32 +4,30 @@
 
 using UnityEngine;
 
-public class BaseEmployeeData : GeneratedData
+public class CharacterData : GeneratedData
 {
 	public string Name;
 	public string Flavor;
-	public string AssetId;
-	public long Race;
-	public long Class;
+	public ERace Race;
+	public EClass Class;
 	public decimal Activated;
 
 
     /// <summary>
     /// Class Constructor
     /// </summary>
-	public BaseEmployeeData()
+	public CharacterData()
 	{
 	}
 	
     /// <summary>
     /// Class Constructor
     /// </summary>
-	public BaseEmployeeData(long IdIn, string NameIn, string FlavorIn, string AssetIdIn, long RaceIn, long ClassIn, decimal ActivatedIn)
+	public CharacterData(long IdIn, string NameIn, string FlavorIn, ERace RaceIn, EClass ClassIn, decimal ActivatedIn)
 	{
 		Id = IdIn;
 		Name = NameIn;
 		Flavor = FlavorIn;
-		AssetId = AssetIdIn;
 		Race = RaceIn;
 		Class = ClassIn;
 		Activated = ActivatedIn;

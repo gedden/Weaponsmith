@@ -13,10 +13,12 @@ public class SessionData
     public int Organic;
     public int Scrap;
 
+    public List<CharacterData> Characters;
     public List<WorkstationData> Workstations;
 
     public SessionData()
     {
         Workstations = new List<WorkstationData>();
+        Characters = new List<CharacterData>();
     }
 }

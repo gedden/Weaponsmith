@@ -14,12 +14,29 @@ public enum ECurrenyType
 
 public enum EArcana
 {
-    Conjuration,    // Yellow   -- make stuff
-    Enchantment,    // Blue     -- enchant stuff
-    Divination,     // White    -- info/discover stuff
-
+    Conjuration,    // Yellow   -- make stuff           "programmer"
+    Enchantment,    // Blue     -- enchant stuff        "Arist"
+    Divination,     // White    -- info/discover stuff  "Designer"
 }
 
+public enum EGender
+{
+    Male,
+    Female,
+}
+
+public enum ERace
+{
+    Human,
+    Elf,
+}
+
+public enum EClass
+{
+    Conjurer,
+    Enchanter,
+    Diviner,
+}
 
 public static class WeaponsmithDefines
 {

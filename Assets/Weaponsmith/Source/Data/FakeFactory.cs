@@ -28,6 +28,22 @@ public class FakeFactory
         return station;
     }
 
+    /// <summary>
+    /// Generate a character
+    /// </summary>
+    /// <param name="CharacterClass"></param>
+    /// <returns></returns>
+    public static CharacterData CreateCharacter(EClass CharacterClass = EClass.Conjurer)
+    {
+        // CharacterData Character = new CharacterData(-1, "Fake McGee", "", "", )
+        CharacterData Character = new CharacterData(-1, NameGenerator.GenerateFullElvenName(), "", ERace.Human, CharacterClass, 1);
+        return Character;
+    }
+
+    /// <summary>
+    /// Create a fake session
+    /// </summary>
+    /// <returns></returns>
     public static SessionData CreateSession()
     {
         SessionData session = new SessionData();
@@ -45,6 +61,9 @@ public class FakeFactory
 
             session.Workstations.Add(Station);
         }
+
+        // Create a fake worker
+        session.Characters.Add(CreateCharacter());
 
         return session;
     }

@@ -5,6 +5,33 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Character : MonoBehaviour
 {
+    /// <summary>
+    /// Create an instance from the character data
+    /// </summary>
+    /// <param name="Data"></param>
+    /// <returns></returns>
+    public static Character CreateInstance(CharacterData Data)
+    {
+        // Get the proper resource
+        GameObject Template = Resources.Load<GameObject>(GetResourcePath(Data));
+        var Instance = GameObject.Instantiate(Template);
+
+        Character CharacterInstance = Instance.AddComponent<Character>();
+
+        // Assign the data
+        CharacterInstance.Data = Data;
+
+
+        // Return
+        return CharacterInstance;
+    }
+
+    private static string GetResourcePath(CharacterData Data)
+    {
+        return "Characters/Character_Female_Druid_01";
+    }
+
+
     public enum ECharacterAnimation
     {
         Idle,
@@ -15,7 +42,7 @@ public class Character : MonoBehaviour
 
 
     // Member Variables
-
+    CharacterData Data;
 
     // Private Members
     private Animator Anim;

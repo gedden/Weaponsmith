@@ -94,6 +94,19 @@ public class Workshop : MonoBehaviour
             var instance = Instantiate<Workstation>(WorkstationTemplate, spawn.transform, false);
             Stations.Add(instance);
         }
+
+        // Spawn all the employees
+        foreach( var CharacterData in session.Characters )
+        {
+            // Create a new instance
+            var spawn = Character.CreateInstance(CharacterData);
+
+            // Just put them all at the first workstation for now
+            spawn.transform.SetParent(Stations[0].transform, false);
+
+
+            // Register them
+        }
     }
 
     private SpawnPoint GetSpawnPoint(int Position)
