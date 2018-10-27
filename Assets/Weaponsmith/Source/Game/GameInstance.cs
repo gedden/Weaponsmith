@@ -17,6 +17,8 @@ class GameInstance : MonoBehaviour
     public MainMenu MainMenuPrefab;
     public Session Session = null;
 
+    public Workshop Workshop;
+
     private ModalManager ModalManager;
     private bool Started = false;
     private InputController Input;
@@ -70,7 +72,12 @@ class GameInstance : MonoBehaviour
         Session = new Session();
         Session.CreateFakeGame();
 
+        // Clear out the world
+        Workshop.Clear();
+
         // Load the world
+        Workshop.Load(Session.Data);
+        
 
         // Start a new day
     }

@@ -9,6 +9,46 @@ public class Session
     int Organic;
     int Scrap;
 
+    Workshop Workshop;
+
+    // Property assignments
+    private SessionData _Data;
+    public SessionData Data
+    {
+        get
+        {
+            return _Data;
+        }
+        set
+        {
+            _Data = value;
+            Initialize();
+        }
+    }
+
+    /// <summary>
+    /// Transient data accessor
+    /// </summary>
+    public bool Transient
+    {
+        get
+        {
+            return _Data.Transient;
+        }
+    }
+
+    /// <summary>
+    /// Initialize this session from the data
+    /// </summary>
+    public void Initialize()
+    {
+        Gold = Data.Gold;
+        Magic = Data.Magic;
+        Organic = Data.Organic;
+        Scrap = Data.Scrap;
+    }
+
+
     /// <summary>
     /// Clear out the session
     /// </summary>
@@ -22,6 +62,7 @@ public class Session
 
     public void CreateFakeGame()
     {
-        // Spawn workstations
+        // Create new data
+        Data = FakeFactory.CreateSession();
     }
 }

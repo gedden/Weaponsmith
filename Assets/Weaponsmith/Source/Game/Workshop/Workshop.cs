@@ -1,11 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Workshop : MonoBehaviour
 {
+    [Header("Workshop Defines")]
+    public List<SpawnPoint> WorkstationSpawns;
+    public Workstation WorkstationTemplate;
+
     List<Workstation> Stations;
     List<Employee> Employees;
+
+    /// <summary>
+    /// Clear out the world
+    /// </summary>
+    public void Clear()
+    {
+        foreach( SpawnPoint Spawn in WorkstationSpawns )
+        {
+            GameUtil.DestroyChildren(Spawn.transform);
+        }
+
+        Stations = new List<Workstation>();
+        Employees = new List<Employee>();
+    }
 
     /// <summary>
     /// Add a workstation
@@ -53,5 +72,37 @@ public class Workshop : MonoBehaviour
             return;
 
         Employees.Remove(Employee);
+    }
+
+    internal void Load(SessionData session)
+    {
+        // Clear out the world
+        Clear();
+
+        // Create new workstations
+        foreach( var WorkstationData in session.Workstations)
+        {
+            // Get the next best spawnpoint
+            var spawn = GetSpawnPoint((int)WorkstationData.Position);
+
+            if( spawn == null )
+            {
+                Debug.Log("Cannot load a workstation with an invalid spawn point (" + WorkstationData.Position + ")");
+                continue;
+            }
+
+            var instance = Instantiate<Workstation>(WorkstationTemplate, spawn.transform, false);
+            Stations.Add(instance);
+        }
+    }
+
+    private SpawnPoint GetSpawnPoint(int Position)
+    {
+        foreach( SpawnPoint Point in WorkstationSpawns )
+        {
+            if (Point.Id == Position)
+                return Point;
+        }
+        return null;
     }
 }

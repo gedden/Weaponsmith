@@ -66,10 +66,12 @@
     <Compile Include="Assets\ShaderForge\Example Assets\Scripts\SoftNormalsToVertexColor.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Character\Character.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Character\Employee.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Data\FakeFactory.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\BaseEmployeeData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\PlayerData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\WorkstationData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\GeneratedData.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Data\SessionData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\WeaponsmithDefines.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\GameInstance.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\GameState.cs" />

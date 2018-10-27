@@ -17,5 +17,18 @@ public class GameUtil
         System.Random Rand = new System.Random(System.DateTime.Now.Millisecond);
         return Affirmitive[Rand.Next(Affirmitive.Length)];
     }
+
+    public static IEnumerable<T> Values<T>()
+    {
+        return Enum.GetValues(typeof(T)).Cast<T>();
+    }
+
+    public static void DestroyChildren(Transform Transform)
+    {
+        foreach( Transform child in Transform )
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
 }
 
