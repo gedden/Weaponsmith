@@ -250,7 +250,14 @@ public class DatabaseUtil
 
                     var Field = Result.GetType().GetField(Member.Name);
 
-                    var value = reader[Member.Name];
+                    // Compensate for DBNull (which cant be natrually cast to a string~
+                    var SQLValue = reader[Member.Name];
+                    object value = SQLValue as object;
+                    if ( SQLValue is System.DBNull )
+                    {
+                        value = ((System.DBNull)value).ToString();
+                    }
+
                     if (value != null)
                     {
                         try

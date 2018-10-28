@@ -36,7 +36,7 @@ public class FakeFactory
     public static CharacterData CreateCharacter(EClass CharacterClass = EClass.Conjurer)
     {
         // CharacterData Character = new CharacterData(-1, "Fake McGee", "", "", )
-        CharacterData Character = new CharacterData(-1, NameGenerator.GenerateFullElvenName(), "", ERace.Human, CharacterClass, 1);
+        CharacterData Character = new CharacterData(-1, NameGenerator.GenerateFullElvenName(), "", ERace.Human, CharacterClass, EGender.Male, 1);
         return Character;
     }
 

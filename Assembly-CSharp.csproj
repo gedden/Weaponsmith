@@ -69,6 +69,7 @@
     <Compile Include="Assets\Weaponsmith\Source\Data\FakeFactory.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\CharacterData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\PlayerData.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Data\Generated\WeaponTypeData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\Generated\WorkstationData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\GeneratedData.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Data\NameGenerator.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\Weaponsmith\Source\Game\InputController.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Project\CraftingProject.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Project\Project.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Game\Project\WeaponCraftingProject.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Session.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\SpawnPoint.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\UI\CurrencyDisplay.cs" />

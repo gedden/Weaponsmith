@@ -11,6 +11,8 @@ public abstract class Project
     public virtual float Percent { get; private set; }
     public virtual float PhasePercent { get; private set; }
 
+    public abstract void StartProject();
+
 
     public Project()
     {

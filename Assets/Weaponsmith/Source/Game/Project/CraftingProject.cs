@@ -54,9 +54,17 @@ public abstract class CraftingProject : Project
     }
 
     /// <summary>
+    /// Spin up a new crafting project
+    /// </summary>
+    public CraftingProject() : base()
+    {
+        CurrentPhase = ECraftingPhase.UNSTARTED;
+    }
+
+    /// <summary>
     /// Start a new project!
     /// </summary>
-    public virtual void StartProject()
+    public override void StartProject()
     {
         // start a new phase
         CurrentPhase = ECraftingPhase.ITEM_SELECT;

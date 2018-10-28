@@ -4,34 +4,30 @@
 
 using UnityEngine;
 
-public class CharacterData : GeneratedData
+public class WeaponTypeData : GeneratedData
 {
 	public string Name;
+	public string AssetId;
 	public string Flavor;
-	public ERace Race;
-	public EClass Class;
-	public EGender Gender;
-	public decimal Activated;
+	public long Activated;
 
 
     /// <summary>
     /// Class Constructor
     /// </summary>
-	public CharacterData()
+	public WeaponTypeData()
 	{
 	}
 	
     /// <summary>
     /// Class Constructor
     /// </summary>
-	public CharacterData(long IdIn, string NameIn, string FlavorIn, ERace RaceIn, EClass ClassIn, EGender GenderIn, decimal ActivatedIn)
+	public WeaponTypeData(long IdIn, string NameIn, string AssetIdIn, string FlavorIn, long ActivatedIn)
 	{
 		Id = IdIn;
 		Name = NameIn;
+		AssetId = AssetIdIn;
 		Flavor = FlavorIn;
-		Race = RaceIn;
-		Class = ClassIn;
-		Gender = GenderIn;
 		Activated = ActivatedIn;
 
 	}

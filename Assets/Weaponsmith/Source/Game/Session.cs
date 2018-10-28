@@ -5,6 +5,7 @@ using UnityEngine;
 public class Session
 {
     Workshop Workshop;
+    Project CurrentProject;
 
     // Property assignments
     public SessionData Data { get; set; }
@@ -23,7 +24,6 @@ public class Session
     {
         switch (Phase)
         {
-            default:
             case EGamePhase.StartOfDay:
                 Phase = EGamePhase.Working;
                 OnWorkDay();
@@ -32,6 +32,7 @@ public class Session
                 Phase = EGamePhase.EndOfDay;
                 OnEndOfDay();
                 break;
+            default:
             case EGamePhase.EndOfDay:
                 Phase = EGamePhase.StartOfDay;
                 OnStartOfDay();
@@ -41,7 +42,9 @@ public class Session
 
     public void OnStartOfDay()
     {
-
+        // Start a new project
+        CurrentProject = new WeaponCraftingProject();
+        CurrentProject.StartProject();
     }
     public void OnWorkDay() { }
     public void OnEndOfDay() { }
