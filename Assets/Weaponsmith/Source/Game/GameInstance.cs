@@ -42,7 +42,7 @@ class GameInstance : MonoBehaviour
     /// </summary>
     public void OnFirstStart()
     {
-        ShowMainMenu();
+        // ShowMainMenu();
     }
 
     /// <summary>

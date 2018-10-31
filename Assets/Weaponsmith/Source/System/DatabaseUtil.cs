@@ -241,19 +241,30 @@ public class DatabaseUtil
                 // Create a new result
                 T Result = (T)Activator.CreateInstance(typeof(T));
 
+                // Get the id
+                if (true)
+                {
+                    // Register
+                    var IdProperty = Result.GetType().GetProperty("Id");
+                    var SQLValue = reader["Id"];
+                    object value = SQLValue as object;
+                    IdProperty.SetValue(Result, value, null);
+                }
+
                 foreach (var Member in typeof(T).GetMembers())
                 {
                     // Only consider fields
                     if (Member.MemberType != MemberTypes.Field)
                         continue;
 
+                    // Register
 
                     var Field = Result.GetType().GetField(Member.Name);
 
                     // Compensate for DBNull (which cant be natrually cast to a string~
                     var SQLValue = reader[Member.Name];
                     object value = SQLValue as object;
-                    if ( SQLValue is System.DBNull )
+                    if (SQLValue is System.DBNull)
                     {
                         value = ((System.DBNull)value).ToString();
                     }
@@ -262,7 +273,7 @@ public class DatabaseUtil
                     {
                         try
                         {
-                            if(Field.FieldType.IsEnum)
+                            if (Field.FieldType.IsEnum)
                             {
                                 var valueSet = Enum.ToObject(Field.FieldType, value);
 
@@ -273,7 +284,7 @@ public class DatabaseUtil
                                 Field.SetValue(Result, value);
                             }
                         }
-                        catch( Exception e )
+                        catch (Exception e)
                         {
                             Debug.LogError(e);
                         }

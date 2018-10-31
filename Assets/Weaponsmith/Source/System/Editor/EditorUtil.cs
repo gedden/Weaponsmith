@@ -19,6 +19,12 @@ class EditorUtil
         AddUI("Assets/Weaponsmith/Prefabs/UI/Widgets/Dropdown.prefab");
     }
 
+    [MenuItem("GameObject/UI/Weaponsmith/Scroll View")]
+    private static void AddWeaponsmithScrollView()
+    {
+        AddUI("Assets/Weaponsmith/Prefabs/UI/Widgets/Scroll View.prefab");
+    }
+
     private static void AddUI(string AssetPath)
     {
         var Asset = AssetDatabase.LoadAssetAtPath<GameObject>(AssetPath);

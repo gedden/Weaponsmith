@@ -85,7 +85,10 @@
     <Compile Include="Assets\Weaponsmith\Source\Game\SpawnPoint.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\UI\CurrencyDisplay.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\UI\Dock.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Game\UI\ListOption.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\UI\MainMenu.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Game\UI\ScrollViewController.cs" />
+    <Compile Include="Assets\Weaponsmith\Source\Game\UI\WeaponSelectDialog.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Workshop\Workshop.cs" />
     <Compile Include="Assets\Weaponsmith\Source\Game\Workshop\Workstation.cs" />
     <Compile Include="Assets\Weaponsmith\Source\System\Database.cs" />
